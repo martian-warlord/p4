@@ -16,6 +16,12 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
+Route::get('/get-environment',function() {
+
+    echo "Environment: ".App::environment();
+
+});
+
 Route::get('mysql-test', function() {
 
     # Print environment
@@ -26,5 +32,12 @@ Route::get('mysql-test', function() {
 
     # If the "Pre" package is not installed, you should output using print_r instead
     echo Pre::render($results);
+
+});
+
+Route::get('/trigger-error',function() {
+
+    # Class Foobar should not exist, so this should create an error
+    $foo = new Foobar;
 
 });
