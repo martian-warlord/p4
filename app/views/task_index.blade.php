@@ -7,7 +7,7 @@
 
     <div class="panel panel-default">
         <div class="panel-body">
-            <a href="{{ action('TaskController@create') }}" class="btn btn-primary">Create Task</a>
+            <a href="{{ action('TasksController@create') }}" class="btn btn-primary">Create Task</a>
         </div>
     </div>
 
@@ -28,8 +28,8 @@
                     <td>{{ $task->name }}</td>
                     <td>{{ $task->complete ? 'Yes' : 'No' }}</td>
                     <td>
-                        <a href="{{ action('TaskController@edit') }}" class="btn btn-default">Edit</a>
-                        <a href="{{ action('TaskController@delete') }}" class="btn btn-danger">Delete</a>
+                        <a href="{{ action('TasksController@edit') }}" class="btn btn-default">Edit</a>
+                        <a href="{{ action('TasksController@delete') }}" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
                 @endforeach

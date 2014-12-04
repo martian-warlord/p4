@@ -10,6 +10,9 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+
+
+
 // Route::resource();
 
 // Bind route parameters.
@@ -26,7 +29,15 @@ Route::post('/create', 'TasksController@handleCreate');
 Route::post('/edit', 'TasksController@handleEdit');
 Route::post('/delete', 'TasksController@handleDelete');
 
+Route::controller('task', 'TaskController');
 
+// Route::get('/task', 'TaskController@index');
+// Route::get('/task/create', 'TaskController@create');
+// Route::post('/task', 'TaskController@store');
+// Route::get('/task/{task_id}', 'TaskController@show');
+// Route::get('/task/{task_id}/edit', 'TaskController@edit');
+// Route::put('/task/{task_id}', 'TaskController@update');
+// Route::delete('/task/{task_id}', 'TaskController@destroy');
 
 Route::get('/practice-reading', function() {
 

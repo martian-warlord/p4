@@ -19,7 +19,7 @@
                         </a> -->
 <!--                                 <nav class="navbar navbar-default" role="navigation">
             <div class="navbar-header"> -->
-<a href="{{ action('TasksController@index') }}" class="navbar-brand" style="text-align:center !important;"><h1>Task Manager<h1></a>
+<a href="{{ action('TasksController@index') }}" ><h1>Task Manager<h1></a>
 <!--             </div>
         </nav> -->
 
@@ -28,7 +28,9 @@
 </header>
 
 
-
+    @if(Session::get('flash_message'))
+        <div class='flash-message'>{{ Session::get('flash_message') }}</div>
+    @endif
 
 <div class="jumbotron">
     <div class="container">

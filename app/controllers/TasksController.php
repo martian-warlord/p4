@@ -9,21 +9,20 @@ class TasksController extends BaseController
         // Show a listing of tasks.
         $tasks = Task::all();
 
-        return View::make('index', compact('tasks'));
+        return View::make('task_index', compact('tasks'));
     }
 
     public function create()
     {
         // Show the create task form.
-        return View::make('create');
+        return View::make('task_create');
     }
 
     public function handleCreate()
     {
         // Handle create form submission.
         $task = new Task;
-        $task->title        = Input::get('title');
-        $task->publisher    = Input::get('publisher');
+        $task->name        = Input::get('name');
         $task->complete     = Input::has('complete');
         $task->save();
 
@@ -32,16 +31,15 @@ class TasksController extends BaseController
 
     public function edit(Task $task)
     {
-        // Show the edit task form.
-        return View::make('edit', compact('task'));
+        // // Show the edit task form.
+        return View::make('task_edit', compact('task'));
     }
 
     public function handleEdit()
     {
         // Handle edit form submission.
         $task = Task::findOrFail(Input::get('id'));
-        $task->title        = Input::get('title');
-        $task->publisher    = Input::get('publisher');
+        $task->name        = Input::get('name');
         $task->complete     = Input::has('complete');
         $task->save();
 
@@ -51,7 +49,7 @@ class TasksController extends BaseController
     public function delete(Task $task)
     {
         // Show delete confirmation page.
-        return View::make('delete', compact('task'));
+        return View::make('task_delete', compact('Task'));
     }
 
     public function handleDelete()
