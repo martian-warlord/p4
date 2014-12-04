@@ -10,34 +10,86 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+// Route::resource();
 
-Route::get('/', function()
-{
-	return View::make('hello');
+// Bind route parameters.
+// Route::resource('path','ProductController');
+
+// Show pages.
+Route::get('/', 'TasksController@index');
+Route::get('/create', 'TasksController@create');
+Route::get('/edit/{Task}', 'TasksController@edit');
+Route::get('/delete/{task}', 'TasksController@delete');
+
+// Handle form submissions.
+Route::post('/create', 'TasksController@handleCreate');
+Route::post('/edit', 'TasksController@handleEdit');
+Route::post('/delete', 'TasksController@handleDelete');
+
+
+
+Route::get('/practice-reading', function() {
+
+    # The all() method will fetch all the rows from a Model/table
+    $tasks = Task::all();
+
+    # Make sure we have results before trying to print them...
+    if($tasks->isEmpty() != TRUE) {
+
+        # Typically we'd pass $books to a View, but for quick and dirty demonstration, let's just output here...
+        foreach($tasks as $task) {
+            echo $task->name.'<br>';
+        }
+    }
+    else {
+        return 'No tasks found';
+    }
+
 });
 
-Route::get('/get-environment',function() {
+Route::get('/practice-reading-one-task', function() {
 
-    echo "Environment: ".App::environment();
+    $task = Task::where('name', 'LIKE', '%tester%')->first();
 
-});
+    if($task) {
+        return $task->name;
+    }
+    else {
+        return 'Task not found.';
+    }
 
-Route::get('mysql-test', function() {
-
-    # Print environment
-    echo 'Environment: '.App::environment().'<br>';
-
-    # Use the DB component to select all the databases
-    $results = DB::select('SHOW DATABASES;');
-
-    # If the "Pre" package is not installed, you should output using print_r instead
-    echo Pre::render($results);
+    
 
 });
 
-Route::get('/trigger-error',function() {
 
-    # Class Foobar should not exist, so this should create an error
-    $foo = new Foobar;
+Route::get('/practice-updating', function() {
+
+    # First get a book to update
+    $task = Task::where('name', 'LIKE', '%tester%')->first();
+
+    # If we found the book, update it
+    if($task) {
+
+        # Give it a different title
+        $task->name = 'testerUpdated';
+
+        # Save the changes
+        $task->save();
+
+        return "Update complete; check the database to see if your update worked...";
+    }
+    else {
+        return "Book not found, can't update.";
+    }
 
 });
+
+
+
+
+
+
+
+
+

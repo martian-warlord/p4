@@ -7,7 +7,9 @@ class TasksController extends BaseController
     public function index()
     {
         // Show a listing of tasks.
-        return View::make('index');
+        $tasks = Task::all();
+
+        return View::make('index', compact('tasks'));
     }
 
     public function create()
@@ -19,27 +21,46 @@ class TasksController extends BaseController
     public function handleCreate()
     {
         // Handle create form submission.
+        $task = new Task;
+        $task->title        = Input::get('title');
+        $task->publisher    = Input::get('publisher');
+        $task->complete     = Input::has('complete');
+        $task->save();
+
+        return Redirect::action('TasksController@index');
     }
 
     public function edit(Task $task)
     {
         // Show the edit task form.
-        return View::make('edit');
+        return View::make('edit', compact('task'));
     }
 
     public function handleEdit()
     {
         // Handle edit form submission.
+        $task = Task::findOrFail(Input::get('id'));
+        $task->title        = Input::get('title');
+        $task->publisher    = Input::get('publisher');
+        $task->complete     = Input::has('complete');
+        $task->save();
+
+        return Redirect::action('TasksController@index');
     }
 
-    public function delete()
+    public function delete(Task $task)
     {
         // Show delete confirmation page.
-        return View::make('delete');
+        return View::make('delete', compact('task'));
     }
 
     public function handleDelete()
     {
         // Handle the delete confirmation.
+        $id = Input::get('task');
+        $task = Task::findOrFail($id);
+        $task->delete();
+
+        return Redirect::action('TasksController@index');
     }
 }

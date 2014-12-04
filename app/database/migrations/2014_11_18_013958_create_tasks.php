@@ -15,7 +15,7 @@ class CreateTasks extends Migration {
 		        Schema::create('tasks', function($table)
         {
             $table->increments('id');
-            $table->string('task', 128);
+            $table->string('name', 128);
             $table->boolean('complete');
             $table->timestamps();
         });
