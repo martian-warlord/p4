@@ -7,13 +7,42 @@
     <!-- <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" /> -->
 </head>
 <body>
+
+<header>
+            <div class="jumbotron">
+              <div class="container">
+
+<!--                         <a href='/'>
+                        <h1>
+                            Task Manager
+                        </h1>
+                        </a> -->
+<!--                                 <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-header"> -->
+<a href="{{ action('TasksController@index') }}" class="navbar-brand" style="text-align:center !important;"><h1>Task Manager<h1></a>
+<!--             </div>
+        </nav> -->
+
+              </div>
+            </div>
+</header>
+
+
+
+
+<div class="jumbotron">
     <div class="container">
-        <nav class="navbar navbar-default" role="navigation">
+
+
+<!--         <nav class="navbar navbar-default" role="navigation">
             <div class="navbar-header">
                 <a href="{{ action('TasksController@index') }}" class="navbar-brand">Task Manager</a>
             </div>
-        </nav>
+        </nav> -->
+
+
         @yield('content')
+    </div>
     </div>
 </body>
 </html>
