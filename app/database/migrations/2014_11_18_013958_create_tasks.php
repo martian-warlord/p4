@@ -17,6 +17,7 @@ class CreateTasks extends Migration {
             $table->increments('id');
             $table->string('name', 128);
             $table->boolean('complete');
+            $table->timestamp('completed_at_time');
             $table->timestamps();
         });
 	}

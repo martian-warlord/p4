@@ -4,13 +4,13 @@
 
 class TasksController extends BaseController
 {
-    public function index()
-    {
-        // Show a listing of tasks.
-        $tasks = Task::all();
+    // public function index()
+    // {
+    //     // Show a listing of tasks.
+    //     $tasks = Task::all();
 
-        return View::make('task_index', compact('tasks'));
-    }
+    //     return View::make('task_index', compact('tasks'));
+    // }
 
     public function create()
     {
