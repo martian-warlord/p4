@@ -1,6 +1,6 @@
 @extends('layout')
 
 @section('content')
-    TEST 123
+    add task
 
 @stop

@@ -2,7 +2,7 @@
 
 // app/models/Task.php
 
-class Task extends Eloquent
+class Task extends BaseModel
 {
 
 }

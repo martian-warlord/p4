@@ -1,6 +1,6 @@
 @extends('layout')
 
 @section('content')
-    TEST 123
+    {{$success or 'Try Again'}}
 
 @stop

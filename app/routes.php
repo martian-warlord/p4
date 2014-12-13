@@ -31,19 +31,22 @@
 //route for adding tasks
 Route::get('/add', function() {
 
-echo 'add task';
+return View::make('add');
+// echo 'add task';
 });
 
 //route for adding tasks
 Route::get('/edit', function() {
 
-echo 'edit task';
+return View::make('edit');
+// echo 'edit task';
 });
 
 //route for adding tasks
 Route::get('/delete', function() {
 
-echo 'delete task';
+return View::make('delete');
+// echo 'delete task';
 });
 
 
@@ -51,6 +54,10 @@ echo 'delete task';
 
 // route for completed tasks
 Route::get('/completed', function() {
+
+// return View::make('completed');
+
+$completed_tasks = "";
 
     # The all() method will fetch all the rows from a Model/table
     $tasks = Task::all();
@@ -61,19 +68,20 @@ Route::get('/completed', function() {
         # Typically we'd pass $books to a View, but for quick and dirty demonstration, let's just output here...
         foreach($tasks as $task) {  if ($task->complete == 1)
             {
-            echo 'task id: '.$task->id.'<br>'.'created at: '.$task->created_at.'<br>'.'task name: '.$task->name.'<br>'.'task complete?: '.$task->complete.'<br><br><br>';
+        $completed_tasks .= 'task id: '.$task->id.'<br>'.'created at: '.$task->created_at.'<br>'.'task name: '.$task->name.'<br>'.'task complete?: '.$task->complete.'<br><br><br>';
         }
         }
     }
     else {
-        return 'No complete tasks found';
+        $completed_tasks .= 'No complete tasks found';
     }
-
+return View::make('completed')-> with('success', $completed_tasks);
 
 });
 
 //route for incomplete tasks
 Route::get('/incomplete', function() {
+    $incomplete_tasks = "";
 
     # The all() method will fetch all the rows from a Model/table
     $tasks = Task::all();
@@ -84,39 +92,25 @@ Route::get('/incomplete', function() {
         # Typically we'd pass $books to a View, but for quick and dirty demonstration, let's just output here...
         foreach($tasks as $task) {  if ($task->complete == 0)
             {
-            echo 'task id: '.$task->id.'<br>'.'created at: '.$task->created_at.'<br>'.'task name: '.$task->name.'<br>'.'task complete?: '.$task->complete.'<br><br><br>';
+            $incomplete_tasks .=  'task id: '.$task->id.'<br>'.'created at: '.$task->created_at.'<br>'.'task name: '.$task->name.'<br>'.'task complete?: '.$task->complete.'<br><br><br>';
         }
         }
     }
     else {
-        return 'No incomplete tasks found';
+        $incomplete_tasks .=  'No incomplete tasks found';
     }
 
-
+return View::make('incomplete')-> with('success', $incomplete_tasks);
 });
 
 //route for incomplete tasks
 Route::get('/all', function() {
+    
 
     # The all() method will fetch all the rows from a Model/table
     $tasks = Task::all();
+    return View::make('/all')-> with('tasks', $tasks);   
 
-    # Make sure we have results before trying to print them...
-    if($tasks->isEmpty() != TRUE) {
-
-        # Typically we'd pass $books to a View, but for quick and dirty demonstration, let's just output here...
-        foreach($tasks as $task) {
-            echo 'task id: '.$task->id.'<br>'.'created at: '
-            .$task->created_at.'<br>'.'task name: '
-            .$task->name.'<br>'.'task complete?: '
-            .$task->complete. '<br>'
-            .' task completed at: '.$task->completed_at_time
-            .'<br><br><br>';
-        }
-    }
-    else {
-        return 'No tasks found';
-    }
 });
 
 
