@@ -23,6 +23,7 @@ class TasksController extends BaseController
         // Handle create form submission.
         $task = new Task;
         $task->name        = Input::get('name');
+        $task->created_at = new Carbon(); 
         $task->complete     = Input::has('complete');
         $task->save();
 

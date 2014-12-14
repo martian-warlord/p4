@@ -27,8 +27,8 @@
 <? endif; ?>
                     </td>
                     <td>
-<a href="{{ $task['/edit'] }}" class="btn btn-default">Edit</a>
-<a href="{{ $task['/delete'] }}" class="btn btn-danger">Delete</a>
+<a href='edit/{{ $task['id'] }}' class="btn btn-default">Edit</a>
+
 
                     </td>
                 </tr>

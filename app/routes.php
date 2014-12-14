@@ -28,26 +28,12 @@
 // });
 
 
-//route for adding tasks
-Route::get('/add', function() {
 
-return View::make('add');
-// echo 'add task';
-});
 
-//route for adding tasks
-Route::get('/edit', function() {
 
-return View::make('edit');
-// echo 'edit task';
-});
 
-//route for adding tasks
-Route::get('/delete', function() {
 
-return View::make('delete');
-// echo 'delete task';
-});
+
 
 
 
@@ -59,48 +45,14 @@ Route::get('/completed', function() {
 
 $completed_tasks = "";
 
-    # The all() method will fetch all the rows from a Model/table
     $tasks = Task::all();
-
-    # Make sure we have results before trying to print them...
-    if($tasks->isEmpty() != TRUE) {
-
-        # Typically we'd pass $books to a View, but for quick and dirty demonstration, let's just output here...
-        foreach($tasks as $task) {  if ($task->complete == 1)
-            {
-        $completed_tasks .= 'task id: '.$task->id.'<br>'.'created at: '.$task->created_at.'<br>'.'task name: '.$task->name.'<br>'.'task complete?: '.$task->complete.'<br><br><br>';
-        }
-        }
-    }
-    else {
-        $completed_tasks .= 'No complete tasks found';
-    }
-return View::make('completed')-> with('success', $completed_tasks);
-
+    return View::make('completed')-> with('tasks', $tasks);  
 });
 
 //route for incomplete tasks
 Route::get('/incomplete', function() {
-    $incomplete_tasks = "";
-
-    # The all() method will fetch all the rows from a Model/table
     $tasks = Task::all();
-
-    # Make sure we have results before trying to print them...
-    if($tasks->isEmpty() != TRUE) {
-
-        # Typically we'd pass $books to a View, but for quick and dirty demonstration, let's just output here...
-        foreach($tasks as $task) {  if ($task->complete == 0)
-            {
-            $incomplete_tasks .=  'task id: '.$task->id.'<br>'.'created at: '.$task->created_at.'<br>'.'task name: '.$task->name.'<br>'.'task complete?: '.$task->complete.'<br><br><br>';
-        }
-        }
-    }
-    else {
-        $incomplete_tasks .=  'No incomplete tasks found';
-    }
-
-return View::make('incomplete')-> with('success', $incomplete_tasks);
+    return View::make('incomplete')-> with('tasks', $tasks);  
 });
 
 //route for incomplete tasks
@@ -112,6 +64,123 @@ Route::get('/all', function() {
     return View::make('/all')-> with('tasks', $tasks);   
 
 });
+
+//route for incomplete tasks
+Route::get('/create', function() {
+    
+return View::make('/create');   
+
+});
+
+Route::post('/handleCreate', function() 
+    {
+        // Handle create form submission.
+        $task = new Task();
+        $task->name        = Input::get('name');
+        $task->complete     = Input::has('complete');
+
+        // if complete add  $task->completed_at_time = new Carbon(); 
+        $task->save();
+
+        return Redirect::to('/');
+    });
+
+
+
+
+
+
+
+
+Route::get('/edit/{id}', function($id) {
+
+    $task    = Task::findOrFail($id);
+
+return View::make('edit')->with('task', $task);
+// echo 'edit task';
+});
+
+
+Route::post('/handleEdit', function() {
+
+
+
+    # First get a book to update
+    // $task = Task::findOrFail(Input::get('id'));
+
+    //     $task->fill(Input::all());
+    //     $task->complete     = Input::has('complete');
+    //     $task->save();
+      
+
+
+
+
+
+$data = Input::all();
+
+
+
+    //Build the validation constraint set.
+    $rules = array(
+        'name' => array('alpha_num', 'min:3')
+    );
+
+    // Create a new validator instance.
+    $validator = Validator::make($data, $rules);
+
+    if ($validator->passes()) {
+
+    $task = Task::findOrFail(Input::get('id'));
+
+        $task->fill(Input::all());
+        $task->complete     = Input::has('complete');
+        $task->save();
+
+
+
+
+
+    }
+
+    return Redirect::to('/all');
+
+
+
+
+
+// $task->name        = "Walk the Dog";
+       
+    //     $task->complete     = Input::get('complete');
+
+
+       //   $task->save();
+       // return Redirect::to('/all');
+
+
+
+
+   // echo $_GET['name'];
+//     $boolz = Task::findOrFail(Input::get('complete'));
+// echo 'name: '.$nemo.'<br><br>'.'comp: '.$boolz;
+
+
+    //     return "Update complete; check the database to see if your update worked...";
+    // }
+    // else {
+    //     return "Book not found, can't update.";
+    // }
+
+});
+
+
+
+
+
+
+
+
+
 
 
 Route::get('/practice-creating', function() {
