@@ -106,42 +106,42 @@ Route::post('/handleEdit', function() {
 
 
     # First get a book to update
-    // $task = Task::findOrFail(Input::get('id'));
+    $task = Task::findOrFail(Input::get('id'));
 
-    //     $task->fill(Input::all());
-    //     $task->complete     = Input::has('complete');
-    //     $task->save();
+        $task->fill(Input::all());
+        $task->complete     = Input::has('complete');
+        $task->save();
       
 
 
 
 
 
-$data = Input::all();
+// $data = Input::all();
 
 
 
-    //Build the validation constraint set.
-    $rules = array(
-        'name' => array('alpha_num', 'min:3')
-    );
+//     //Build the validation constraint set.
+//     $rules = array(
+//         'name' => array('alpha_num', 'min:3')
+//     );
 
-    // Create a new validator instance.
-    $validator = Validator::make($data, $rules);
+//     // Create a new validator instance.
+//     $validator = Validator::make($data, $rules);
 
-    if ($validator->passes()) {
+//     if ($validator->passes()) {
 
-    $task = Task::findOrFail(Input::get('id'));
+//     $task = Task::findOrFail(Input::get('id'));
 
-        $task->fill(Input::all());
-        $task->complete     = Input::has('complete');
-        $task->save();
-
-
+//         $task->fill(Input::all());
+//         $task->complete     = Input::has('complete');
+//         $task->save();
 
 
 
-    }
+
+
+//     }
 
     return Redirect::to('/all');
 
