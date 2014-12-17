@@ -237,73 +237,85 @@ Route::get('/', function() {
 });
 
 
-// # User: Sign up
-// Route::get('/signup',
-//     array(
-//         'before' => 'guest',
-//         function() {
-//             return View::make('signup');
-//         }
-//     )
-// );
-// # User: Sign up
-// Route::post('/signup',
-//     array(
-//         'before' => 'csrf',
-//         function() {
-//             $user = new User;
-//             $user->email    = Input::get('email');
-//             $user->password = Hash::make(Input::get('password'));
-//             # Try to add the user
-//             try {
-//                 $user->save();
-//             }
-//             # Fail
-//             catch (Exception $e) {
-//                 return Redirect::to('/signup')
-//                     ->with('flash_message', 'Sign up failed; please try again.')->withInput();
-//             }
-//             # Log the user in
-//             Auth::login($user);
-//             return Redirect::to('/list')
-//                 ->with('flash_message', 'Welcome!');
-//         }
-//     )
-// );
-// # User: Log in
-// Route::get('/login',
-//     array(
-//         'before' => 'guest',
-//         function() {
-//             return View::make('login');
-//         }
-//     )
-// );
-// # User: Log in
-// Route::post('/login',
-//     array(
-//         'before' => ['csrf','guest'],
-//         function() {
-//             $credentials = Input::only('email', 'password');
-//             if (Auth::attempt($credentials, $remember = true)) {
-//                 return Redirect::intended('/')
-//                     ->with('flash_message', 'Welcome Back!');
-//             }
-//             else {
-//                 return Redirect::to('/login')
-//                     ->with('flash_message', 'Log in failed; please try again.');
-//             }
-//             return Redirect::to('login');
-//         }
-//     )
-// );
-// # User: Logout
-// Route::get('/logout', function() {
-//     # Log out
-//     Auth::logout();
-//     # Send them to the homepage
-//     return Redirect::to('/');
-// });
+
+
+Route::get('/signup',
+    array(
+        'before' => 'guest',
+        function() {
+            return View::make('signup');
+        }
+    )
+);
+
+
+# User: Sign up
+Route::post('/signup',
+    array(
+        'before' => 'csrf',
+        function() {
+            $user = new User;
+            $user->email    = Input::get('email');
+            $user->password = Hash::make(Input::get('password'));
+
+            # Try to add the user
+            try {
+                $user->save();
+            }
+            # Fail
+            catch (Exception $e) {
+                return Redirect::to('/signup')
+                    ->with('flash_message', 'Sign up failed; please try again.')->withInput();
+            }
+            # Log the user in
+            Auth::login($user);
+            return Redirect::to('/all')
+                ->with('flash_message', 'Welcome!');
+        }
+    )
+);
+
+
+
+# User: Log in
+Route::get('/login',
+    array(
+        'before' => 'guest',
+        function() {
+            return View::make('login');
+        }
+    )
+);
+
+
+
+# User: Log in
+Route::post('/login',
+    array(
+        'before' => ['csrf','guest'],   //array w guest is not in orig tut
+        function() {
+            $credentials = Input::only('email', 'password');
+            if (Auth::attempt($credentials, $remember = true)) {
+                return Redirect::intended('/')
+                    ->with('flash_message', 'Welcome Back!');
+            }
+            else {
+                return Redirect::to('/login')
+                    ->with('flash_message', 'Log in failed; please try again.');
+            }
+            return Redirect::to('login');
+        }
+    )
+);
+
+
+# User: Logout
+Route::get('/logout', function() {
+    # Log out
+    Auth::logout();
+    # Send them to the homepage
+    return Redirect::to('/');
+});
 
 
 /*-------------------------------------------------------------------------------------------------
