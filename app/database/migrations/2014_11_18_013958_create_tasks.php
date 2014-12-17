@@ -18,8 +18,12 @@ class CreateTasks extends Migration {
             $table->string('name', 128);
             $table->boolean('complete');
             $table->timestamp('completed_at_time');
+            
             $table->timestamps();
         });
+
+	
+
 	}
 
 	/**
@@ -30,6 +34,9 @@ class CreateTasks extends Migration {
 	public function down()
 	{
 		Schema::drop('tasks');
+
 	}
+
+
 
 }

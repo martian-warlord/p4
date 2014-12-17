@@ -1,5 +1,9 @@
 <?php
 
+Route::get('/classes', function() {
+    echo Paste\Pre::render(get_declared_classes(),'');
+});
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -186,6 +190,8 @@ Route::post('/handleEdit', function() {
 Route::get('/practice-creating', function() {
     # Instantiate a new Task model class
     $task = new Task();
+
+    
     # Set
     $task->name = 'walk the dog';
     # Set
