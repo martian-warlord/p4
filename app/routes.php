@@ -43,38 +43,51 @@ Route::get('/classes', function() {
 
 
 // route for completed tasks
-Route::get('/completed', function() {
+Route::get('/completed', array(
+    'before' => 'auth.basic',
 
-// return View::make('completed');
-
-$completed_tasks = "";
-
+    function() {
     $tasks = Task::all();
     return View::make('completed')-> with('tasks', $tasks);  
-});
+                }
+
+));
 
 //route for incomplete tasks
-Route::get('/incomplete', function() {
+Route::get('/incomplete', array(
+    'before' => 'auth.basic',
+
+    function() {
     $tasks = Task::all();
     return View::make('incomplete')-> with('tasks', $tasks);  
-});
+                }
+));
 
-//route for incomplete tasks
-Route::get('/all', function() {
-    
+//route for all tasks
+Route::get('/all', array(
+    'before' => 'auth.basic',
 
+    function() {
     # The all() method will fetch all the rows from a Model/table
     $tasks = Task::all();
     return View::make('/all')-> with('tasks', $tasks);   
+                }
+));
 
-});
 
-//route for incomplete tasks
-Route::get('/create', function() {
-    
+
+Route::get('/create', array(
+    'before' => 'auth.basic',
+
+    function() {  
 return View::make('/create');   
+                }
 
-});
+));
+
+
+
+
 
 Route::post('/handleCreate', function() 
     {
@@ -94,19 +107,15 @@ $task->completed_at_time = new Carbon('America/Chicago');
     });
 
 
+Route::get('/edit/{id}', array(
+    'before' => 'auth.basic',
 
-
-
-
-
-
-Route::get('/edit/{id}', function($id) {
-
+    function($id) {
     $task    = Task::findOrFail($id);
-
 return View::make('edit')->with('task', $task);
-// echo 'edit task';
-});
+                    }
+
+));
 
 
 
@@ -154,7 +163,7 @@ $task->completed_at_time = new Carbon('America/Chicago');
 
 //     }
 
-    return Redirect::to('/completed');
+    return Redirect::to('/all');
 
 
 
