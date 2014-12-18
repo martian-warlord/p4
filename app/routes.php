@@ -185,7 +185,7 @@ Route::post('/handleCreate', function() {
     $task->completed_at_time = new Carbon('America/Chicago');
     };
     $task->save();
-    return Redirect::to('/');
+    return Redirect::to('/incomplete');
 });
 
 
