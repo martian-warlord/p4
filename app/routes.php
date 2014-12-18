@@ -164,7 +164,7 @@ Route::post('/handleCreate', function() {
 
     //Validation constraints.
     $rules = array(
-    'name' => array('min:1')
+    'name' => 'required'
     );
     //New validator
     $validator = Validator::make($data, $rules);
@@ -201,7 +201,7 @@ Route::post('/handleEdit', function() {
     $data = Input::all();
     //Validation constraints
     $rules = array(
-        'name' => array('min:1')
+        'name' => 'required'
     );
 
     // Validator instance.
