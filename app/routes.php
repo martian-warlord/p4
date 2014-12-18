@@ -164,7 +164,7 @@ Route::post('/handleCreate', function() {
 
     //Validation constraints.
     $rules = array(
-    'name' => array('alpha_num', 'min:3')
+    'name' => array('min:1')
     );
     //New validator
     $validator = Validator::make($data, $rules);
@@ -172,7 +172,7 @@ Route::post('/handleCreate', function() {
     //If fails
     if ($validator->fails()) {
     return Redirect::to('/create')
-    ->with('flash_message', 'Edit failed. Tasks must be indexed by complete name. & No crazy characters (^&@^%#)!')
+    ->with('flash_message', 'Edit failed. Tasks must be indexed by complete name.')
     ->withInput();
     }
 
@@ -201,7 +201,7 @@ Route::post('/handleEdit', function() {
     $data = Input::all();
     //Validation constraints
     $rules = array(
-        'name' => array('alpha_num', 'min:3')
+        'name' => array('min:1')
     );
 
     // Validator instance.
@@ -210,7 +210,7 @@ Route::post('/handleEdit', function() {
     // Fails conditional
     if ($validator->fails()) {
     return Redirect::to('/incomplete')
-    ->with('flash_message', 'Edit failed. Tasks must be indexed by complete name.& No crazy characters (^&@^%#)!');
+    ->with('flash_message', 'Edit failed. Tasks must be indexed by complete name.');
     }
 
     // SUCCESS!

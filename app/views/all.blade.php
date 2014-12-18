@@ -47,7 +47,7 @@
 </thead>
 <tbody>
                 @foreach($tasks as $task)
-                <? if ($task['complete']) : ?>
+                <? if ($task['complete']==1) : ?>
 <tr>
                     <td>{{ $task['id'] }}</td>
                     <td><strong>{{ $task['name'] }}</strong></td>
