@@ -34,7 +34,7 @@
     </div>
     </div>
 
-    <div class="jumbotron">
+    <div class="jumbotron" style="color:grey;">
     <div class="container">
         <h1>Deactivated Tasks</h1>
         <table class="table table-striped">

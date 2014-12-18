@@ -7,20 +7,34 @@
 </head>
 <body>
 
-<header><div class="container">
-    <nav>
-        <ul>
-        @if(Auth::check())
-            <li><a href='/logout'>Log out {{ Auth::user()->email; }}</a></li>
-            <li><a href='/incomplete'>Active Tasks</a></li>
-            <li><a href='/create'>+ Add Tasks</a></li>
-            <li><a href='/completed'>Task Archive</a></li>
-            <li><a href='/all'>All Tasks</a></li>
-        @else
-            <li><a href='/signup'>Sign up</a> or <a href='/login'>Log in</a></li>
-        @endif
-        </ul>
-    </nav></div >
+<header>
+    <!-- <div class="container"> -->
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    @if(Auth::check())
+                    <th><a href='/logout'>Log out {{ Auth::user()->email; }}</a></th>
+            <th><a href='/incomplete'>Active Tasks</a></th>
+            <th><a href='/create'>+ Add Tasks</a></th>
+            <th><a href='/completed'>Task Archive</a></th>
+            <th><a href='/all'>All Tasks</a></th>
+
+                    @else
+                    <th><a href='/signup'>Sign up</a> or <a href='/login'>Log in</a></th>
+                    @endif 
+                </tr>
+            </thead>
+                </table>
+
+
+
+
+
+
+
+
+<!-- </div > -->
             <div class="jumbotron">
               <div class="container">
 <a href="/" ><h1>TASK BLASTER<h1></a>

@@ -126,42 +126,32 @@ Route::post('/handleEdit', function() {
     $task = Task::findOrFail(Input::get('id'));
 
         $task->fill(Input::all());
+
+
+$data = Input::all();
+
+    //Build the validation constraint set.
+    $rules = array(
+        'name' => array('alpha_num', 'min:3')
+    );
+
+    // Create a new validator instance.
+    $validator = Validator::make($data, $rules);
+
+    if ($validator->passes()) {
+
+$task->name        = Input::get('name');
+
+    }
+
+
         $task->complete     = Input::has('complete');
  if (Input::has('complete')){
 $task->completed_at_time = new Carbon('America/Chicago');
  };
         $task->save();
-      
 
 
-
-
-
-// $data = Input::all();
-
-
-
-//     //Build the validation constraint set.
-//     $rules = array(
-//         'name' => array('alpha_num', 'min:3')
-//     );
-
-//     // Create a new validator instance.
-//     $validator = Validator::make($data, $rules);
-
-//     if ($validator->passes()) {
-
-//     $task = Task::findOrFail(Input::get('id'));
-
-//         $task->fill(Input::all());
-//         $task->complete     = Input::has('complete');
-//         $task->save();
-
-
-
-
-
-//     }
 
     return Redirect::to('/all');
 
@@ -271,14 +261,44 @@ Route::get('/signup',
 );
 
 
-# User: Sign up
-Route::post('/signup',
-    array(
-        'before' => 'csrf',
-        function() {
+
+
+Route::post('/signup', function()
+{
+    // Fetch all request data.
+    $data = Input::all();
+
+    // Build the validation constraint set.
+    $rules = array(
+        // 'username' => 'alpha_num'
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6'
+
+    );
+
+    // Create a new validator instance.
+    $validator = Validator::make($data, $rules);
+
+    // if ($validator->passes()) {
+    //     // Normally we would do something with the data.
+    //     return 'Data was saved.';
+    // }
+
+if ($validator->fails()) {
+        return Redirect::to('/signup')                 
+        ->with('flash_message', 'Sign up failed; please fix the errors listed below.')
+                ->withInput()
+                ->withErrors($validator);
+    }
+
+
+    // return 'Data was saved.';
+
             $user = new User;
             $user->email    = Input::get('email');
             $user->password = Hash::make(Input::get('password'));
+
+
 
             # Try to add the user
             try {
@@ -293,9 +313,13 @@ Route::post('/signup',
             Auth::login($user);
             return Redirect::to('/all')
                 ->with('flash_message', 'Welcome!');
-        }
-    )
-);
+
+
+
+
+});
+
+
 
 
 
