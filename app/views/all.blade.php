@@ -18,7 +18,7 @@
 </thead>
 <tbody>
                 @foreach($tasks as $task)
-                <? if ($task['complete']==0) : ?>
+                <? if ($task['complete']==10) : ?>
 <tr>
                     <td>{{ $task['id'] }}</td>
                     <td><strong>{{ $task['name'] }}</strong></td>
@@ -47,7 +47,7 @@
 </thead>
 <tbody>
                 @foreach($tasks as $task)
-                <? if ($task['complete']==1) : ?>
+                <? if ($task['complete']==1000) : ?>
 <tr>
                     <td>{{ $task['id'] }}</td>
                     <td><strong>{{ $task['name'] }}</strong></td>
