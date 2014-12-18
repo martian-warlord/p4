@@ -47,7 +47,8 @@
 </thead>
 <tbody>
                 @foreach($tasks as $task)
-                <? if ($task['complete']==1000) : ?>
+                @if ($task['complete'])
+                
 <tr>
                     <td>{{ $task['id'] }}</td>
                     <td><strong>{{ $task['name'] }}</strong></td>
@@ -55,7 +56,7 @@
                     <td>{{ $task['complete'] ? 'Yes' : 'No'}}</td>
                     <td>{{ $task['completed_at_time'] }}</td>
 </tr>
-                <? endif; ?>
+                @endif
                 @endforeach
 </table>
 </div>
