@@ -16,7 +16,7 @@
 </thead>
 <tbody>
                 @foreach($tasks as $task)
-                <? if ($task['complete']==0) : ?>
+                @if ($task['complete']==0)
 <tr>
                     <td>{{ $task['id'] }}</td>
                     <td><strong>{{ $task['name'] }}</strong></td>
@@ -24,7 +24,7 @@
                     <td>{{ $task['complete'] ? 'Yes' : 'No'}}</td>
                     <td><a href="edit/{{$task['id']}}" class="btn btn-default">Edit</a></td>
 </tr>
-                <? endif; ?>
+                @endif
                 @endforeach
 </table>
 </div>

@@ -21,7 +21,7 @@
 <!-- This loops through the task array and puts incomplete tasks into table rows -->
 <tbody>
             @foreach($tasks as $task)
-            <? if ($task['complete']) : ?>
+            @if ($task['complete'])
 <tr>
                     <td>{{ $task['id'] }}</td>
                     <td><strong>{{ $task['name'] }}</strong></td>
@@ -29,7 +29,7 @@
                     <td>{{ $task['complete'] ? 'Yes' : 'No'}}</td>
                     <td>{{ $task['completed_at_time'] }}</td>
 </tr>
-            <? endif; ?>
+            @endif
             @endforeach
 </table>
 </div>
