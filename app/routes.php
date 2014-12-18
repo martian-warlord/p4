@@ -4,39 +4,117 @@ Route::get('/classes', function() {
     echo Paste\Pre::render(get_declared_classes(),'');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the Closure to execute when that URI is requested.
-|
-*/
+
+Route::get('/', function() {
+    return View::make('index');
+});
+
+/*-------------------------------------------------------------------------------------------------
+User routes
+-------------------------------------------------------------------------------------------------*/
 
 
 
-// Route::resource();
+Route::get('/signup',
+    array(
+    'before' => 'guest',
+    function() {
+    return View::make('signup');
+    }
+    )
+);
 
-// Bind route parameters.
-// Route::resource('path','ProductController');
+Route::post('/signup', function(){
+    $data = Input::all();
 
-// Show pages.
-// Route::get('/', function() {
+    // Validation constraints.
+    $rules = array(
+    'email' => 'required|email|unique:users,email',
+    'password' => 'required|min:6'
+    );
 
-//         // Show a listing of tasks.
-//         $tasks = Task::all();
+    // Validator instance.
+    $validator = Validator::make($data, $rules);
 
-//         return View::make('task_index', compact('tasks'));
-// });
+    // If fails
+    if ($validator->fails()) {
+    return Redirect::to('/signup')                 
+    ->with('flash_message', 'Sign up failed; please fix the errors listed below.')
+    ->withInput()
+    ->withErrors($validator);
+    }
+
+    // SUCCESS
+    $user = new User;
+    $user->email    = Input::get('email');
+    $user->password = Hash::make(Input::get('password'));
+
+    # Try to add the user
+    try {
+        $user->save();
+        }
+    # Fail
+    catch (Exception $e) {
+    return Redirect::to('/signup')
+    ->with('flash_message', 'Sign up failed; please try again.')->withInput();
+                        }
+
+    # Login
+    Auth::login($user);
+    return Redirect::to('/all')
+    ->with('flash_message', 'Welcome!');
+});
+
+
+
+
+
+# Log in get
+Route::get('/login',
+    array(
+    'before' => 'guest',
+    function() {
+    return View::make('login');
+                }
+));
+
+
+
+# Log in post
+Route::post('/login',
+    array(
+    'before' => ['csrf','guest'],   
+    function() {
+    $credentials = Input::only('email', 'password');
+    if (Auth::attempt($credentials, $remember = true)) {
+        return Redirect::intended('/')
+            ->with('flash_message', 'Welcome Back!');
+    }
+    else {
+        return Redirect::to('/login')
+            ->with('flash_message', 'Log in failed; please try again.');
+    }
+    return Redirect::to('login');
+    }
+));
+
+
+# Logout
+Route::get('/logout', function() {
+    # Log out
+    Auth::logout();
+    # Send them to the homepage
+    return Redirect::to('/');
+});
 
 
 
 
 
 
-
+/*-------------------------------------------------------------------------------------------------
+Task routes
+-------------------------------------------------------------------------------------------------*/
 
 
 
@@ -45,18 +123,15 @@ Route::get('/classes', function() {
 // route for completed tasks
 Route::get('/completed', array(
     'before' => 'auth.basic',
-
     function() {
     $tasks = Task::all();
     return View::make('completed')-> with('tasks', $tasks);  
                 }
-
 ));
 
 //route for incomplete tasks
 Route::get('/incomplete', array(
     'before' => 'auth.basic',
-
     function() {
     $tasks = Task::all();
     return View::make('incomplete')-> with('tasks', $tasks);  
@@ -66,112 +141,79 @@ Route::get('/incomplete', array(
 //route for all tasks
 Route::get('/all', array(
     'before' => 'auth.basic',
-
     function() {
-    # The all() method will fetch all the rows from a Model/table
     $tasks = Task::all();
     return View::make('/all')-> with('tasks', $tasks);   
                 }
 ));
 
-
-
 Route::get('/create', array(
     'before' => 'auth.basic',
-
     function() {  
-return View::make('/create');   
+    return View::make('/create');   
                 }
-
 ));
 
 
 
 
 
-Route::post('/handleCreate', function() 
-    {
+Route::post('/handleCreate', function() {
 
    $data = Input::all();
 
-    //Build the validation constraint set.
+    //Validation constraints.
     $rules = array(
-        'name' => array('alpha_num', 'min:3')
+    'name' => array('alpha_num', 'min:3')
     );
-
-    // Create a new validator instance.
+    //New validator
     $validator = Validator::make($data, $rules);
 
+    //If fails
     if ($validator->fails()) {
-
-return Redirect::to('/create')
-                ->with('flash_message', 'Edit failed. Tasks must be indexed by complete name. & No crazy characters (^&@^%#)!')
-                ->withInput();
-
-// $task->name        = Input::get('name');
-        // return Redirect::to('/incomplete');
-
+    return Redirect::to('/create')
+    ->with('flash_message', 'Edit failed. Tasks must be indexed by complete name. & No crazy characters (^&@^%#)!')
+    ->withInput();
     }
 
 
-        // Handle create form submission.
-        $task = new Task();
-        $task->name        = Input::get('name');
-        $task->complete     = Input::has('complete');
- if (Input::has('complete')){
-$task->completed_at_time = new Carbon('America/Chicago');
- };
-
-
-        // if complete add  $task->completed_at_time = new Carbon(); 
-        $task->save();
-
-        return Redirect::to('/');
-    });
-
-
-
+    // SUCCESS
+    $task = new Task();
+    $task->name        = Input::get('name');
+    $task->complete     = Input::has('complete');
+    if (Input::has('complete')){
+    $task->completed_at_time = new Carbon('America/Chicago');
+    };
+    $task->save();
+    return Redirect::to('/');
+});
 
 
 Route::get('/edit/{id}', array(
     'before' => 'auth.basic',
-
     function($id) {
     $task    = Task::findOrFail($id);
-return View::make('edit')->with('task', $task);
+    return View::make('edit')->with('task', $task);
                     }
-
 ));
 
-
-
-
 Route::post('/handleEdit', function() {
-
-    
-    
-
-
     $data = Input::all();
-
-    //Build the validation constraint set.
+    //Validation constraints
     $rules = array(
         'name' => array('alpha_num', 'min:3')
     );
 
-    // Create a new validator instance.
+    // Validator instance.
     $validator = Validator::make($data, $rules);
 
+    // Fails conditional
     if ($validator->fails()) {
-
-return Redirect::to('/incomplete')
-                ->with('flash_message', 'Edit failed. Tasks must be indexed by complete name.& No crazy characters (^&@^%#)!');
-
-// $task->name        = Input::get('name');
-        // return Redirect::to('/incomplete');
-
+    return Redirect::to('/incomplete')
+    ->with('flash_message', 'Edit failed. Tasks must be indexed by complete name.& No crazy characters (^&@^%#)!');
     }
 
+    // SUCCESS!
     $task = Task::findOrFail(Input::get('id'));
     $task->fill(Input::all());
     $task->complete     = Input::has('complete');
@@ -179,19 +221,8 @@ return Redirect::to('/incomplete')
     $task->completed_at_time = new Carbon('America/Chicago');
     };
     $task->save();
-
     return Redirect::to('/all');
-
 });
-
-
-
-
-
-
-
-
-
 
 
 Route::get('/practice-creating', function() {
@@ -207,7 +238,7 @@ Route::get('/practice-creating', function() {
     $task->save();
     echo 'test task1 has been added! Check your database to see...'.'<br>';
 
-   $task2 = new Task();
+    $task2 = new Task();
     # Set
     $task2->name = 'make lunch';
     # Set
@@ -217,7 +248,7 @@ Route::get('/practice-creating', function() {
     echo 'test task2 has been added! Check your database to see...'.'<br>';
 
 
-   $task3 = new Task();
+    $task3 = new Task();
     # Set
     $task3->name = '500 jumping jacks';
     # Set
@@ -227,7 +258,7 @@ Route::get('/practice-creating', function() {
     echo 'test task3 has been added! Check your database to see...'.'<br>';
 
 
-   $task4 = new Task();
+    $task4 = new Task();
     # Set
     $task4->name = 'jump in the lake';
     # Set
@@ -241,203 +272,6 @@ Route::get('/practice-creating', function() {
 
 
 
-/*-------------------------------------------------------------------------------------------------
-untested - user routes that need work - examples from foo books example
--------------------------------------------------------------------------------------------------*/
-// Homepage
-Route::get('/', function() {
-    return View::make('index');
-});
-
-
-
-
-Route::get('/signup',
-    array(
-        'before' => 'guest',
-        function() {
-            return View::make('signup');
-        }
-    )
-);
-
-
-
-
-Route::post('/signup', function()
-{
-    // Fetch all request data.
-    $data = Input::all();
-
-    // Build the validation constraint set.
-    $rules = array(
-        // 'username' => 'alpha_num'
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6'
-
-    );
-
-    // Create a new validator instance.
-    $validator = Validator::make($data, $rules);
-
-    // if ($validator->passes()) {
-    //     // Normally we would do something with the data.
-    //     return 'Data was saved.';
-    // }
-
-if ($validator->fails()) {
-        return Redirect::to('/signup')                 
-        ->with('flash_message', 'Sign up failed; please fix the errors listed below.')
-                ->withInput()
-                ->withErrors($validator);
-    }
-
-
-    // return 'Data was saved.';
-
-            $user = new User;
-            $user->email    = Input::get('email');
-            $user->password = Hash::make(Input::get('password'));
-
-
-
-            # Try to add the user
-            try {
-                $user->save();
-            }
-            # Fail
-            catch (Exception $e) {
-                return Redirect::to('/signup')
-                    ->with('flash_message', 'Sign up failed; please try again.')->withInput();
-            }
-            # Log the user in
-            Auth::login($user);
-            return Redirect::to('/all')
-                ->with('flash_message', 'Welcome!');
-
-
-
-
-});
-
-
-
-
-
-# User: Log in
-Route::get('/login',
-    array(
-        'before' => 'guest',
-        function() {
-            return View::make('login');
-        }
-    )
-);
-
-
-
-# User: Log in
-Route::post('/login',
-    array(
-        'before' => ['csrf','guest'],   //array w guest is not in orig tut
-        function() {
-            $credentials = Input::only('email', 'password');
-            if (Auth::attempt($credentials, $remember = true)) {
-                return Redirect::intended('/')
-                    ->with('flash_message', 'Welcome Back!');
-            }
-            else {
-                return Redirect::to('/login')
-                    ->with('flash_message', 'Log in failed; please try again.');
-            }
-            return Redirect::to('login');
-        }
-    )
-);
-
-
-# User: Logout
-Route::get('/logout', function() {
-    # Log out
-    Auth::logout();
-    # Send them to the homepage
-    return Redirect::to('/');
-});
-
-
-/*-------------------------------------------------------------------------------------------------
-tested examples below
--------------------------------------------------------------------------------------------------*/
-
-
-
-
-
-
-
-
-Route::get('/practice-reading', function() {
-
-    # The all() method will fetch all the rows from a Model/table
-    $tasks = Task::all();
-
-    # Make sure we have results before trying to print them...
-    if($tasks->isEmpty() != TRUE) {
-
-        # Typically we'd pass $books to a View, but for quick and dirty demonstration, let's just output here...
-        foreach($tasks as $task) {
-            echo 'task id: '.$task->id.'<br><br>'.'created at: '.$task->created_at.'<br>'.'task name: '.$task->name.'<br>'.'task complete?: '.$task->complete.'<br><br><br>';
-        }
-    }
-    else {
-        return 'No tasks found';
-    }
-
-
-
-
-
-
-
-});
-
-Route::get('/practice-reading-one-task', function() {
-
-    $task = Task::where('name', 'LIKE', '%tester%')->first();
-
-    if($task) {
-        return $task->name;
-    }
-    else {
-        return 'Task not found.';
-    }
-
-    
-
-});
-
-
-Route::get('/practice-updating', function() {
-
-    # First get a book to update
-    $task = Task::where('name', 'LIKE', '%tester%')->first();
-
-    # If we found the book, update it
-    if($task) {
-
-        # Give it a different title
-        $task->name = 'testerUpdated';
-
-        # Save the changes
-        $task->save();
-
-        return "Update complete; check the database to see if your update worked...";
-    }
-    else {
-        return "Book not found, can't update.";
-    }
-
-});
 
 
 

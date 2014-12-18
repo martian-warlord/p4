@@ -2,33 +2,31 @@
 
 @section('content')
 <div class="jumbotron">
-    <div class="container">
+<div class="container">
 
 
-	{{---- EDIT -----}}
-	
-	{{ Form::open(array('url' => '/handleEdit'))}}
+{{---- EDIT -----}}
+
+{{ Form::open(array('url' => '/handleEdit'))}}
+
+{{ Form::hidden('id',$task['id']); }}
+
+<div class='form-group'>
+{{ Form::label('name','Name') }}
+{{ Form::text('name',$task['name']); }}
+</div>
+<div class='form-group'>
+{{ Form::label('complete','Complete?') }}
+{{ Form::checkbox('complete', $task['complete'] , $task['complete']); }}
+{{ $task->complete ? 'checked' : '' }}
+</div>
 
 
+{{ Form::submit('Save'); }}
 
-		{{ Form::hidden('id',$task['id']); }}
+{{ Form::close() }}
 
-		<div class='form-group'>
-			{{ Form::label('name','Name') }}
-			{{ Form::text('name',$task['name']); }}
-		</div>
-		<div class='form-group'>
-			{{ Form::label('complete','Complete?') }}
-			{{ Form::checkbox('complete', $task['complete'] , $task['complete']); }}
-			{{ $task->complete ? 'checked' : '' }}
-		</div>
+</div>
+</div>
 
-
-		{{ Form::submit('Save'); }}
-
-	{{ Form::close() }}
-
-    </div>
-    </div>
-
-	@stop
+@stop

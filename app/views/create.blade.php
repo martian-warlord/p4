@@ -2,30 +2,31 @@
 
 @section('content')
 <div class="jumbotron">
-    <div class="container">
+<div class="container">
+    
+<div class="page-header">
+<h1>Activate New Task</h1>
+</div>
 
-    <div class="page-header">
-        <h1>Activate New Task</h1>
-    </div>
+{{ Form::open(array('url' => '/handleCreate')) }}
 
-    {{ Form::open(array('url' => '/handleCreate')) }}
         <div class="form-group">
-            <label for="title">Name</label>
-            <input type="text" class="form-control" name="name" />
+        <label for="title">Name</label>
+        <input type="text" class="form-control" name="name" />
         </div>
+
         <div class="checkbox">
-            <label for="complete">
-                <input type="checkbox" name="complete" /> Complete?
-            </label>
+        <label for="complete">
+        <input type="checkbox" name="complete" /> Complete?
+        </label>
+
         </div>{{ Form::submit('Add'); }}
-        <!-- <input type="submit" value="Create" class="btn btn-primary" /> -->
         <a href="{{ url('/') }}" class="btn btn-link">Cancel</a>
-    </form>
+
+{{ Form::close() }}
 
 
-
-    {{ Form::close() }}
-    </div>
-    </div>
+</div>
+</div>
     
 @stop
