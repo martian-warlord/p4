@@ -91,6 +91,29 @@ return View::make('/create');
 
 Route::post('/handleCreate', function() 
     {
+
+   $data = Input::all();
+
+    //Build the validation constraint set.
+    $rules = array(
+        'name' => array('alpha_num', 'min:3')
+    );
+
+    // Create a new validator instance.
+    $validator = Validator::make($data, $rules);
+
+    if ($validator->fails()) {
+
+return Redirect::to('/create')
+                ->with('flash_message', 'Edit failed. Tasks must be indexed by complete name. & No crazy characters (^&@^%#)!')
+                ->withInput();
+
+// $task->name        = Input::get('name');
+        // return Redirect::to('/incomplete');
+
+    }
+
+
         // Handle create form submission.
         $task = new Task();
         $task->name        = Input::get('name');
@@ -105,6 +128,9 @@ $task->completed_at_time = new Carbon('America/Chicago');
 
         return Redirect::to('/');
     });
+
+
+
 
 
 Route::get('/edit/{id}', array(
@@ -123,12 +149,10 @@ return View::make('edit')->with('task', $task);
 Route::post('/handleEdit', function() {
 
     
-    $task = Task::findOrFail(Input::get('id'));
-
-        $task->fill(Input::all());
+    
 
 
-$data = Input::all();
+    $data = Input::all();
 
     //Build the validation constraint set.
     $rules = array(
@@ -138,48 +162,25 @@ $data = Input::all();
     // Create a new validator instance.
     $validator = Validator::make($data, $rules);
 
-    if ($validator->passes()) {
+    if ($validator->fails()) {
 
-$task->name        = Input::get('name');
+return Redirect::to('/incomplete')
+                ->with('flash_message', 'Edit failed. Tasks must be indexed by complete name.& No crazy characters (^&@^%#)!');
+
+// $task->name        = Input::get('name');
+        // return Redirect::to('/incomplete');
 
     }
 
-
-        $task->complete     = Input::has('complete');
- if (Input::has('complete')){
-$task->completed_at_time = new Carbon('America/Chicago');
- };
-        $task->save();
-
-
+    $task = Task::findOrFail(Input::get('id'));
+    $task->fill(Input::all());
+    $task->complete     = Input::has('complete');
+    if (Input::has('complete')){
+    $task->completed_at_time = new Carbon('America/Chicago');
+    };
+    $task->save();
 
     return Redirect::to('/all');
-
-
-
-
-
-// $task->name        = "Walk the Dog";
-       
-    //     $task->complete     = Input::get('complete');
-
-
-       //   $task->save();
-       // return Redirect::to('/all');
-
-
-
-
-   // echo $_GET['name'];
-//     $boolz = Task::findOrFail(Input::get('complete'));
-// echo 'name: '.$nemo.'<br><br>'.'comp: '.$boolz;
-
-
-    //     return "Update complete; check the database to see if your update worked...";
-    // }
-    // else {
-    //     return "Book not found, can't update.";
-    // }
 
 });
 

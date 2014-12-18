@@ -2,7 +2,9 @@
 
 @section('content')
 <div class="jumbotron">
-    <div class="container">
+    <div class="container" style="color:grey;">
+<h1>Deactivated Tasks</h1>
+
         <table class="table table-striped">
             <thead>
                 <tr>

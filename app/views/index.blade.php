@@ -1,6 +1,8 @@
 @extends('layout')
 
 @section('content')
-    TEST 123
+    Welcome to TASK BLASTER!!!!</br>
+    Login above and join the fun!  
+
 
 @stop
