@@ -82,6 +82,10 @@ Route::post('/handleCreate', function()
         $task = new Task();
         $task->name        = Input::get('name');
         $task->complete     = Input::has('complete');
+ if (Input::has('complete')){
+$task->completed_at_time = new Carbon();
+ };
+
 
         // if complete add  $task->completed_at_time = new Carbon(); 
         $task->save();
@@ -105,15 +109,16 @@ return View::make('edit')->with('task', $task);
 });
 
 
+
+
 Route::post('/handleEdit', function() {
 
-
-
-    # First get a book to update
+    
     $task = Task::findOrFail(Input::get('id'));
 
         $task->fill(Input::all());
         $task->complete     = Input::has('complete');
+
         $task->save();
       
 
@@ -147,7 +152,7 @@ Route::post('/handleEdit', function() {
 
 //     }
 
-    return Redirect::to('/all');
+    return Redirect::to('/completed');
 
 
 

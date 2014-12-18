@@ -14,8 +14,6 @@ protected $fillable = array('name', 'complete', 'completed_at_time');
   //       return $this->belongsTo('User');
     // }
 
-public function user() {
-    return $this->belongsTo('User');
-}
+
 
 }

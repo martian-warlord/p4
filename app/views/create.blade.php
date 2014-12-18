@@ -1,8 +1,11 @@
 @extends('layout')
 
 @section('content')
+<div class="jumbotron">
+    <div class="container">
+
     <div class="page-header">
-        <h1>Create Task <small>and someday finish it!</small></h1>
+        <h1>Activate New Task</h1>
     </div>
 
     {{ Form::open(array('url' => '/handleCreate')) }}
@@ -22,4 +25,7 @@
 
 
     {{ Form::close() }}
+    </div>
+    </div>
+    
 @stop

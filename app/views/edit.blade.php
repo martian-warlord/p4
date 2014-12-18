@@ -1,7 +1,8 @@
 @extends('layout')
 
 @section('content')
-
+<div class="jumbotron">
+    <div class="container">
 
 
 	{{---- EDIT -----}}
@@ -21,24 +22,13 @@
 			{{ Form::checkbox('complete', $task['complete'] , $task['complete']); }}
 			{{ $task->complete ? 'checked' : '' }}
 		</div>
-<!-- 		        <div class="checkbox">
-            <label for="complete">
-                <input type="checkbox" name="complete" {{ $task->complete ? 'checked' : '' }} /> Complete?
-            </label>
-        </div> -->
-<!-- {{ Form::checkbox('complete', '0', false) }} -->
-
-<!--         <div class="checkbox">
-            <label for="complete">
-                <input type="checkbox" name="complete" /> Complete?
-            </label>
-        </div> -->
 
 
 		{{ Form::submit('Save'); }}
 
 	{{ Form::close() }}
 
-
+    </div>
+    </div>
 
 	@stop
