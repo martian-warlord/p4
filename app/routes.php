@@ -83,7 +83,7 @@ Route::post('/handleCreate', function()
         $task->name        = Input::get('name');
         $task->complete     = Input::has('complete');
  if (Input::has('complete')){
-$task->completed_at_time = new Carbon();
+$task->completed_at_time = new Carbon('America/Chicago');
  };
 
 
@@ -118,7 +118,9 @@ Route::post('/handleEdit', function() {
 
         $task->fill(Input::all());
         $task->complete     = Input::has('complete');
-
+ if (Input::has('complete')){
+$task->completed_at_time = new Carbon('America/Chicago');
+ };
         $task->save();
       
 
