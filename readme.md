@@ -8,10 +8,13 @@ P4: A web application called Task Blaster which includes a Lorem Ipsum Generator
 
 
 ## Demo
-Screencast TDB
+Screencast link:  http://screencast.com/t/H1LXLxY5k7o
 
 ## Details for teaching team
-Basic implementation but an excellent learning experience.
+Basic implementation but an excellent learning experience.  I tried to start with a restful AJAX implementation but that approach added too much complexity too soon.  I then went back to a basic routes file implementation and completed the basic requirements.
+I look forward to pushing all my route logic to controllers and then models when I revisit this app.  I really like Laravel and can
+see this technology would be really fast once I have the basics down.  Thanks for the awesome class!  I really appreciate your help.
+
 
 ## Outside code
 * JQuery: 		http://jquery.com/
@@ -20,4 +23,4 @@ Basic implementation but an excellent learning experience.
 * Bootswatch: 	http://bootswatch.com/
 * Foobooks: http://foobooks.dwa15-practice.biz/
 * Codebright: http://daylerees.com/codebright
-* Laracasts forum: https://laracasts.com/
+* Laracasts forum: https://laracasts.com/ // for date formatting/Carbon suggestion.
